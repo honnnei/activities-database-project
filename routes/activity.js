@@ -14,9 +14,64 @@ router.get('/all', function(req, res, next) {
   });
 });
 
+router.get('/types', function(req, res, next) {
+    queries.getTypes()
+    .then(function(shows) {
+      res.status(200).json(shows);
+    })
+    .catch(function(error) {
+      next(error);
+    });
+  });
+
 // GET a single activity by id
 router.get('/:id', (req, res, next) => {
-    db.getSingle(req.params.id)
+    queries.getSingle(req.params.id)
+    .then(function(show) {
+      res.status(200).json(show);
+    })
+    .catch(function(error) {
+      next(error);
+    });
+  });
+
+// GET aactivities by price
+router.get('/order/:column', (req, res, next) => {
+    queries.orderByAsc(req.params.column)
+    .then(function(show) {
+      res.status(200).json(show);
+    })
+    .catch(function(error) {
+      next(error);
+    });
+  });
+
+
+
+  router.get('/all', function(req, res, next) {
+    queries.getAll()
+    .then(function(shows) {
+      res.status(200).json(shows);
+    })
+    .catch(function(error) {
+      next(error);
+    });
+  });
+
+  // GET all types
+//   router.get('/types', (req, res, next) => {
+//     queries.getAllTypes()
+//     .then(function(show) {
+//       res.status(200).json(show);
+//     })
+//     .catch(function(error) {
+//       next(error);
+//     });
+//   });
+
+  // GET aactivities by type
+router.get('/type/:type', (req, res, next) => {
+    queries.getByType(req.params.type)
     .then(function(show) {
       res.status(200).json(show);
     })
@@ -27,9 +82,9 @@ router.get('/:id', (req, res, next) => {
 
 // add activity
 router.post('/add', (req, res, next) => { 
-  db.add(req.body)
+    queries.add(req.body)
     .then(function(activityID) {
-      return db.getSingle(activityID);
+      return queries.getSingle(activityID);
     })
     .then(function(show) {
       res.json(show);
@@ -46,9 +101,9 @@ router.post('/add', (req, res, next) => {
         error: 'You cannot update the id field'
       });
     }
-    db.update(req.params.id, req.body)
+    queries.update(req.params.id, req.body)
     .then(function() {
-      return db.getSingle(req.params.id);
+      return queries.getSingle(req.params.id);
     })
     .then(function(show) {
       res.status(200).json(show);
@@ -60,9 +115,9 @@ router.post('/add', (req, res, next) => {
   
 // delete activity
   router.delete('/:id', function(req, res, next) {
-    db.getSingle(req.params.id)
+    queries.getSingle(req.params.id)
     .then(function(show) {
-      db.deleteItem(req.params.id)
+    queries.deleteItem(req.params.id)
       .then(function() {
         res.status(200).json(show);
       })

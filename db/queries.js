@@ -14,16 +14,32 @@ function getSingle(activityID) {
   return Activity().where('id', parseInt(activityID)).first();
 }
 
+function orderByAsc(column) {
+  return Activity().select().orderBy(column);
+}
+
 function getByPrice() {
     // return Activity().select();
+//     SELECT *
+// FROM public.activity
+// ORDER BY price ASC;
 }
 
 function getByCommute() {
     // return Activity().select();
+//     SELECT *
+// FROM public.activity
+// ORDER BY commute_time ASC;
+}
+
+function getTypes() {
+  return Activity().select('type').distinct();
+  // SELECT 	DISTINCT type FROM public.activity;
 }
 
 function getByType(type) {
-    // return Activity().select();
+  return Activity().where('type', (type));
+  //SELECT * FROM public.activity WHERE type = 'museum';
 }
 
 function add(activity) {
@@ -38,12 +54,11 @@ function deleteItem(activityID) {
   return Activity().where('id', parseInt(activityID)).del();
 }
 
-
-
-
 module.exports = {
   getAll: getAll,
+  getTypes: getTypes,
   getSingle: getSingle,
+  orderByAsc: orderByAsc,
   getByPrice: getByPrice,
   getByCommute: getByCommute,
   getByType: getByType,
