@@ -95,23 +95,23 @@ router.post('/add', (req, res, next) => {
   });
   
 //   update activity 
-  router.put('/:id', (req, res, next) => {
-    if(req.body.hasOwnProperty('id')) {
-      return res.status(422).json({
-        error: 'You cannot update the id field'
-      });
-    }
-    queries.update(req.params.id, req.body)
-    .then(function() {
-      return queries.getSingle(req.params.id);
-    })
-    .then(function(show) {
-      res.status(200).json(show);
-    })
-    .catch(function(error) {
-      next(error);
+router.put('/:id', (req, res, next) => {
+  if(req.body.hasOwnProperty('id')) {
+    return res.status(422).json({
+      error: 'You cannot update the id field'
     });
+  }
+  queries.update(req.params.id, req.body)
+  .then(function() {
+    return queries.getSingle(req.params.id);
+  })
+  .then(function(show) {
+    res.status(200).json(show);
+  })
+  .catch(function(error) {
+    next(error);
   });
+});
   
 // delete activity
   router.delete('/:id', function(req, res, next) {
