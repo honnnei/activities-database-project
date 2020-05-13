@@ -8,25 +8,25 @@ chai.use(chaiHttp);
 
 describe('API Routes', function() {
 
-//   beforeEach(function(done) {
-//     knex.migrate.rollback()
-//     .then(function() {
-//       knex.migrate.latest()
-//       .then(function() {
-//         return knex.seed.run()
-//         .then(function() {
-//           done();
-//         });
-//       });
-//     });
-//   });
+  beforeEach(function(done) {
+    knex.migrate.rollback()
+    .then(function() {
+      knex.migrate.latest()
+      .then(function() {
+        return knex.seed.run()
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
 
-//   afterEach(function(done) {
-//     knex.migrate.rollback()
-//     .then(function() {
-//       done();
-//     });
-//   });
+  afterEach(function(done) {
+    knex.migrate.rollback()
+    .then(function() {
+      done();
+    });
+  });
 
   describe('GET /activities/all', function() {
     it('should return all activities', function(done) {
@@ -54,102 +54,109 @@ describe('API Routes', function() {
     });
   });
 
-//   describe('GET /api/v1/shows/:id', function() {
-//     it('should return a single show', function(done) {
-//       chai.request(server)
-//       .get('/api/v1/shows/1')
-//       .end(function(err, res) {
-//         res.should.have.status(200);
-//         res.should.be.json; // jshint ignore:line
-//         res.body.should.be.a('object');
-//         res.body.should.have.property('name');
-//         res.body.name.should.equal('Suits');
-//         res.body.should.have.property('channel');
-//         res.body.channel.should.equal('USA Network');
-//         res.body.should.have.property('genre');
-//         res.body.genre.should.equal('Drama');
-//         res.body.should.have.property('rating');
-//         res.body.rating.should.equal(3);
-//         res.body.should.have.property('explicit');
-//         res.body.explicit.should.equal(false);
-//         done();
-//       });
-//     });
-//   });
+  describe('GET /activities/:id', function() {
+    it('should return a single show', function(done) {
+      chai.request(server)
+      .get('/activities/2')
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json; // jshint ignore:line
+        res.body.should.be.a('object');
+        res.body.should.have.property('title');
+        res.body.title.should.equal('London Eye');
+        res.body.should.have.property('location');
+        res.body.location.should.equal('Waterloo');
+        res.body.should.have.property('price');
+        res.body.price.should.equal(16);
+        res.body.should.have.property('time_needed');
+        res.body.time_needed.should.equal(1);
+        res.body.should.have.property('commute_time');
+        res.body.commute_time.should.equal(15);
+        res.body.should.have.property('description');
+        res.body.description.should.equal('See the view from 60feet up');
+        done();
+      });
+    });
+  });
 
-//   describe('POST /api/v1/shows', function() {
-//     it('should add a show', function(done) {
-//       chai.request(server)
-//       .post('/api/v1/shows')
-//       .send({
-//         name: 'Family Guy',
-//         channel : 'Fox',
-//         genre: 'Comedy',
-//         rating: 4,
-//         explicit: true
-//       })
-//       .end(function(err, res) {
-//         res.should.have.status(200);
-//         res.should.be.json; // jshint ignore:line
-//         res.body.should.be.a('object');
-//         res.body.should.have.property('name');
-//         res.body.name.should.equal('Family Guy');
-//         res.body.should.have.property('channel');
-//         res.body.channel.should.equal('Fox');
-//         res.body.should.have.property('genre');
-//         res.body.genre.should.equal('Comedy');
-//         res.body.should.have.property('rating');
-//         res.body.rating.should.equal(4);
-//         res.body.should.have.property('explicit');
-//         res.body.explicit.should.equal(true);
-//         done();
-//       });
-//     });
-//   });
+  describe('POST /activities/add', function() {
+    it('should add an activity', function(done) {
+      chai.request(server)
+      .post('/activities/add')
+      .send({
+        title: 'Oxford Street',
+        type: 'shopping',
+        location: 'Oxford Circus',
+        price: 0,
+        time_needed: 1,
+        commute_time: 0,
+        description: "shopping for presents"   
+      })
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json; // jshint ignore:line
+        res.body.should.be.a('object');
+        res.body.should.have.property('title');
+        res.body.title.should.equal('Oxford Street');
+        res.body.should.have.property('location');
+        res.body.location.should.equal('Oxford Circus');
+        res.body.should.have.property('price');
+        res.body.price.should.equal(0);
+        res.body.should.have.property('time_needed');
+        res.body.time_needed.should.equal(1);
+        res.body.should.have.property('commute_time');
+        res.body.commute_time.should.equal(0);
+        res.body.should.have.property('description');
+        res.body.description.should.equal('shopping for presents');
+        done();
+      });
+    });
+  });
 
-//   describe('PUT /api/v1/shows/:id', function() {
-//     it('should update a show', function(done) {
-//       chai.request(server)
-//       .put('/api/v1/shows/1')
-//       .send({
-//         rating: 4,
-//         explicit: true
-//       })
-//       .end(function(err, res) {
-//         res.should.have.status(200);
-//         res.should.be.json; // jshint ignore:line
-//         res.body.should.be.a('object');
-//         res.body.should.have.property('name');
-//         res.body.name.should.equal('Suits');
-//         res.body.should.have.property('channel');
-//         res.body.channel.should.equal('USA Network');
-//         res.body.should.have.property('genre');
-//         res.body.genre.should.equal('Drama');
-//         res.body.should.have.property('rating');
-//         res.body.rating.should.equal(4);
-//         res.body.should.have.property('explicit');
-//         res.body.explicit.should.equal(true);
-//         done();
-//       });
-//     });
-//     it('should NOT update a show if the id field is part of the request', function(done) {
-//       chai.request(server)
-//       .put('/api/v1/shows/1')
-//       .send({
-//         id: 20,
-//         rating: 4,
-//         explicit: true
-//       })
-//       .end(function(err, res) {
-//         res.should.have.status(422);
-//         res.should.be.json; // jshint ignore:line
-//         res.body.should.be.a('object');
-//         res.body.should.have.property('error');
-//         res.body.error.should.equal('You cannot update the id field');
-//         done();
-//       });
-//     });
-//   });
+  describe('PUT /activities/:id', function() {
+    it('should update a show', function(done) {
+      chai.request(server)
+      .put('/activities/2')
+      .send({
+        title: 'London EYE EYE'
+      })
+      .end(function(err, res) {
+        res.should.have.status(200);
+        res.should.be.json; // jshint ignore:line
+        res.body.should.be.a('object');
+        res.body.should.have.property('title');
+        res.body.title.should.equal('London EYE EYE');
+        res.body.should.have.property('location');
+        res.body.location.should.equal('Waterloo');
+        res.body.should.have.property('price');
+        res.body.price.should.equal(16);
+        res.body.should.have.property('time_needed');
+        res.body.time_needed.should.equal(1);
+        res.body.should.have.property('commute_time');
+        res.body.commute_time.should.equal(15);
+        res.body.should.have.property('description');
+        res.body.description.should.equal('See the view from 60feet up');
+        done();
+      });
+    });
+
+    it('should NOT update an activity if the id field is part of the request', function(done) {
+      chai.request(server)
+      .put('/activities/2')
+      .send({
+        id: 20,
+        title: 'London EYES'
+      })
+      .end(function(err, res) {
+        res.should.have.status(422);
+        res.should.be.json; // jshint ignore:line
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.error.should.equal('You cannot update the id field');
+        done();
+      });
+    });
+  });
 
 //   describe('DELETE /api/v1/shows/:id', function() {
 //     it('should delete a show', function(done) {
