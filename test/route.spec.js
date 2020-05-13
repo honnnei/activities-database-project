@@ -36,7 +36,7 @@ describe('API Routes', function() {
       res.should.have.status(200);
       res.should.be.json; // jshint ignore:line
       res.body.should.be.a('array');
-      res.body.length.should.equal(3);
+      res.body.length.should.equal(11);
       res.body[1].should.have.property('title');
       res.body[1].title.should.equal('London Eye');
       res.body[1].should.have.property('location');
@@ -184,9 +184,9 @@ describe('API Routes', function() {
           res.should.have.status(200);
           res.should.be.json; // jshint ignore:line
           res.body.should.be.a('array');
-          res.body.length.should.equal(2);
+          res.body.length.should.equal(10);
           res.body[1].should.have.property('title');
-          res.body[1].title.should.equal('Tower of London');
+          res.body[1].title.should.equal('Oxford Street');
           done();
         });
       });
