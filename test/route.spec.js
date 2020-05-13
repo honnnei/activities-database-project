@@ -158,45 +158,39 @@ describe('API Routes', function() {
     });
   });
 
-//   describe('DELETE /api/v1/shows/:id', function() {
-//     it('should delete a show', function(done) {
-//       chai.request(server)
-//       .delete('/api/v1/shows/1')
-//       .end(function(error, response) {
-//         response.should.have.status(200);
-//         response.should.be.json; // jshint ignore:line
-//         response.body.should.be.a('object');
-//         response.body.should.have.property('name');
-//         response.body.name.should.equal('Suits');
-//         response.body.should.have.property('channel');
-//         response.body.channel.should.equal('USA Network');
-//         response.body.should.have.property('genre');
-//         response.body.genre.should.equal('Drama');
-//         response.body.should.have.property('rating');
-//         response.body.rating.should.equal(3);
-//         response.body.should.have.property('explicit');
-//         response.body.explicit.should.equal(false);
-//         chai.request(server)
-//         .get('/api/v1/shows')
-//         .end(function(err, res) {
-//           res.should.have.status(200);
-//           res.should.be.json; // jshint ignore:line
-//           res.body.should.be.a('array');
-//           res.body.length.should.equal(3);
-//           res.body[0].should.have.property('name');
-//           res.body[0].name.should.equal('Game of Thrones');
-//           res.body[0].should.have.property('channel');
-//           res.body[0].channel.should.equal('HBO');
-//           res.body[0].should.have.property('genre');
-//           res.body[0].genre.should.equal('Fantasy');
-//           res.body[0].should.have.property('rating');
-//           res.body[0].rating.should.equal(5);
-//           res.body[0].should.have.property('explicit');
-//           res.body[0].explicit.should.equal(true);
-//           done();
-//         });
-//       });
-//     });
-//   });
+  describe('DELETE /activities/:id', function() {
+    it('should delete an activity', function(done) {
+      chai.request(server)
+      .delete('/activities/2')
+      .end(function(error, res) {
+        res.should.have.status(200);
+        res.should.be.json; // jshint ignore:line
+        res.body.should.be.a('object');
+        res.body.should.have.property('title');
+        res.body.title.should.equal('London Eye');
+        res.body.should.have.property('location');
+        res.body.location.should.equal('Waterloo');
+        res.body.should.have.property('price');
+        res.body.price.should.equal(16);
+        res.body.should.have.property('time_needed');
+        res.body.time_needed.should.equal(1);
+        res.body.should.have.property('commute_time');
+        res.body.commute_time.should.equal(15);
+        res.body.should.have.property('description');
+        res.body.description.should.equal('See the view from 60feet up');
+        chai.request(server)
+        .get('/activities/all')
+        .end(function(err, res) {
+          res.should.have.status(200);
+          res.should.be.json; // jshint ignore:line
+          res.body.should.be.a('array');
+          res.body.length.should.equal(2);
+          res.body[1].should.have.property('title');
+          res.body[1].title.should.equal('Tower of London');
+          done();
+        });
+      });
+    });
+  });
 
 });
